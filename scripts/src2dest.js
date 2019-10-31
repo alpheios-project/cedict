@@ -158,6 +158,7 @@ rlInterface.on('close', () => {
   match = metadataStr.match(/#! date=(\d{4})-(\d{2})-(\d{2})/)
   if (match !== null) {
     targetInfo.version = `v${match[1]}${match[2]}${match[3]}`
+    dictData.metadata.version = targetInfo.version
   } else {
     console.error('Cannot parse a version field')
   }
