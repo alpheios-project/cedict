@@ -1,0 +1,45 @@
+{
+  "name": "cedict",
+  "version": "1.0.0",
+  "description": "Data from the CEDICT Chinese to English dictionary",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alpheios-project/cedict.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alpheios-project/cedict/issues"
+  },
+  "homepage": "https://github.com/alpheios-project/cedict#readme",
+  "eslintConfig": {
+    "extends": [
+      "standard",
+      "plugin:jsdoc/recommended"
+    ],
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "parserOptions": {
+      "parser": "babel-eslint",
+      "ecmaVersion": 2019,
+      "sourceType": "module",
+      "allowImportExportEverywhere": true
+    }
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsdoc": "^16.1.1",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  }
+}
