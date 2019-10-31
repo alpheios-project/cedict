@@ -21,7 +21,7 @@ const targetInfo = {
   fileExtension: 'json'
 }
 
-let counter = 0
+let counter = 1
 let metadataStr = ''
 let dictData = { // eslint-disable-line prefer-const
   metadata: {},
@@ -36,7 +36,6 @@ const rlInterface = readline.createInterface({
 })
 
 rlInterface.on('line', (line) => {
-  counter++
   if (/^#/.test(line)) {
     // Assemble metadata into a single string for further parsing
     metadataStr += `${line}\n`
@@ -60,6 +59,7 @@ rlInterface.on('line', (line) => {
     index: counter,
     size: encoder.encode(JSON.stringify(entry, ...stringifyOptions)).length
   })
+  counter++
 })
 
 rlInterface.on('close', () => {
