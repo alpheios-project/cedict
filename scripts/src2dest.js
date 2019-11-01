@@ -2,7 +2,7 @@ import fs from 'fs'
 import readline from 'readline'
 
 // Not sure why calculated size is smaller than the actual one; this ratio is to adjust it to norm
-const adjustmentRatio = 1.2
+const adjustmentRatio = 1.21
 const targetChunkSize = 1e7
 const chunkSizeLimit = Math.round(targetChunkSize / adjustmentRatio)
 const encoder = new TextEncoder()
@@ -35,6 +35,67 @@ const rlInterface = readline.createInterface({
   output: process.stdout
 })
 
+/**
+ * Some words can be homonyms. In that case they will have classifiers in their description field
+ * and some text after the end of it (i.e. the classifier).
+ * We must split such descriptions into multiple so we'll be able to create a separate entry for each meaning.
+ *
+ * @param {string} description - A description for an entry
+ * @param {Array<object>} storage - An array of object where parsing results will be stored.
+ */
+const parseDescription = (description, storage) => {
+  let result = {} // eslint-disable-line prefer-const
+  const clPos = description.search(/\/CL:/)
+  if (clPos !== -1) {
+    // This description has a classifier
+    result.descriptions = description.substring(0, clPos)
+    description = description.substring(clPos + 1)
+    const nextDescrPos = description.search(/\//)
+    if (nextDescrPos !== -1) {
+      // Start from the third position to remove `CL:`
+      result.classifier = description.substring(3, nextDescrPos)
+      storage.push(result)
+      description = description.substring(nextDescrPos + 1)
+      parseDescription(description, storage)
+    } else {
+      // There are no more parts to process
+      // The rest of the description string contains a classifier
+      // Start from the third position to remove `CL:` at the beginning of it
+      result.classifier = description.substring(3)
+      storage.push(result)
+    }
+  } else {
+    result.descriptions = description
+    storage.push(result)
+  }
+}
+
+/**
+ * Parses a classifier string (which might have multiple classifiers)
+ * into an array of single classifier items.
+ *
+ * @param {string} classifiersString - One or several classifiers in a string
+ * @returns {Array<object>} - An array of classifier objects
+ */
+const parseClassifiers = (classifiersString) => {
+  const partStrings = classifiersString.split(',')
+  let classifiers = [] // eslint-disable-line prefer-const
+  partStrings.forEach((str) => {
+    const clParts = str.match(/(.+)\[(.+)]/)
+    if (clParts) {
+      let classifier = {} // eslint-disable-line prefer-const
+      const hws = clParts[1].split('|')
+      classifier.traditionalHeadword = hws[0]
+      classifier.simplilfiedHeadword = (hws.length === 2) ? hws[1] : hws[0]
+      classifier.pinyin = clParts[2]
+      classifiers.push(classifier)
+    } else {
+      console.error(`Cannot parse a "${str}" classifier`)
+    }
+  })
+  return classifiers
+}
+
 rlInterface.on('line', (line) => {
   if (/^#/.test(line)) {
     // Assemble metadata into a single string for further parsing
@@ -47,19 +108,79 @@ rlInterface.on('line', (line) => {
     console.error(`Cannot parse line ${counter}: ${line}`)
     return
   }
-  const entry = {
-    index: counter,
-    traditionalHeadword: parts[1],
-    simplifiedHeadword: parts[2],
-    pinyin: parts[3],
-    definition: parts[4]
+
+  let entryTemplate = { // eslint-disable-line prefer-const
+    // Index will be set later because one entry can be split into multiple
+    index: 0
   }
-  dictData.entries.push(entry)
-  sizeData.push({
-    index: counter,
-    size: encoder.encode(JSON.stringify(entry, ...stringifyOptions)).length
+
+  if (/·/.test(parts[1])) {
+    // This is a compound name (e.g. a western name consisting of first and last names)
+    entryTemplate.type = 'compound name'
+
+    let subparts = parts[1].match(/(\S+)·(\S+)/)
+    if (subparts) {
+      entryTemplate.traditionalHeadword = ''
+      entryTemplate.traditionalHeadwordParts = {
+        firstName: subparts[1],
+        lastName: subparts[2]
+      }
+    } else {
+      console.error(`Cannot parse a compound name in a traditional headword in line ${counter}: ${line}`)
+    }
+
+    subparts = parts[2].match(/(\S+)·(\S+)/)
+    if (subparts) {
+      entryTemplate.simplifiedHeadword = ''
+      entryTemplate.simplifiedHeadwordParts = {
+        firstName: subparts[1],
+        lastName: subparts[2]
+      }
+    } else {
+      console.error(`Cannot parse a compound name in a traditional headword in line ${counter}: ${line}`)
+    }
+
+    subparts = parts[3].match(/(.+)\s·\s(.+)/)
+    if (subparts) {
+      entryTemplate.pinyin = ''
+      entryTemplate.pinyinParts = {
+        firstName: subparts[1],
+        lastName: subparts[2]
+      }
+    } else {
+      console.error(`Cannot parse a compound name in a traditional headword in line ${counter}: ${line}`)
+    }
+  } else if (/.+，.+/.test(parts[1])) {
+    // This is a proverb
+    entryTemplate.type = 'proverb'
+    entryTemplate.traditionalHeadword = parts[1]
+    entryTemplate.simplifiedHeadword = parts[2]
+    entryTemplate.pinyin = parts[3]
+  } else {
+    // This is a regular dictionary entry
+    entryTemplate.type = 'not specified'
+    entryTemplate.traditionalHeadword = parts[1]
+    entryTemplate.simplifiedHeadword = parts[2]
+    entryTemplate.pinyin = parts[3]
+  }
+
+  let parsedDescriptions = [] // eslint-disable-line prefer-const
+  parseDescription(parts[4], parsedDescriptions)
+  parsedDescriptions.forEach((desc) => {
+    // If there are multiple descriptions then this word is a homonym and shall produce multiple dictionary entries
+    let entry = Object.assign({}, entryTemplate) // eslint-disable-line prefer-const
+    entry.index = counter
+    entry.descriptions = desc.descriptions.split('/')
+    if (desc.hasOwnProperty('classifier')) { // eslint-disable-line no-prototype-builtins
+      entry.classifier = parseClassifiers(desc.classifier)
+    }
+    dictData.entries.push(entry)
+    sizeData.push({
+      index: counter,
+      size: encoder.encode(JSON.stringify(entry, ...stringifyOptions)).length
+    })
+    counter++
   })
-  counter++
 })
 
 rlInterface.on('close', () => {
@@ -169,6 +290,8 @@ rlInterface.on('close', () => {
   } else {
     console.error('Cannot parse a time field')
   }
+  // It will be set later but we need to have it here for calculation of the metadata size
+  dictData.metadata.chunkNumber = 0
 
   const metadataSize = encoder.encode(JSON.stringify(dictData.metadata, ...stringifyOptions)).length
   let chunks = [] // eslint-disable-line prefer-const
@@ -176,29 +299,25 @@ rlInterface.on('close', () => {
   let currentChunkIndex = 0
   sizeData.forEach((entry) => {
     if ((size + entry.size) >= chunkSizeLimit) {
-      // This is a split point
-      if (currentChunkIndex === 0) {
-        // This is the first chunk and it must include a metadata object
-        chunks.push({
-          metaData: dictData.metadata,
-          entries: dictData.entries.slice(currentChunkIndex, entry.index - 1)
-        })
-      } else {
-        chunks.push({
-          entries: dictData.entries.slice(currentChunkIndex, entry.index - 1)
-        })
-      }
+      // This is a split point. Each chunk will have a metadata object at the top
+      chunks.push({
+        metadata: dictData.metadata,
+        entries: dictData.entries.slice(currentChunkIndex, entry.index - 1)
+      })
       currentChunkIndex = entry.index - 1
-      size = 0
+      // Reset size to its initial value
+      size = metadataSize
     }
     size += entry.size
   })
   // Add the last chunk
   chunks.push({
+    metadata: dictData.metadata,
     entries: dictData.entries.slice(currentChunkIndex, dictData.entries.length)
   })
 
   chunks.forEach((chunk, index) => {
+    chunk.metadata.chunkNumber = index + 1
     const output = JSON.stringify(chunk, ...stringifyOptions)
     fs.writeFile(`${targetInfo.path}${targetInfo.fileName}-${targetInfo.version}-c${String(index + 1).padStart(3, '0')}.${targetInfo.fileExtension}`, output, function (err) {
       if (err) {
