@@ -1,6 +1,9 @@
 import fs from 'fs'
 import readline from 'readline'
 
+// A revision number, will be used to identify changes if there is more than one revision per day
+const revision = 1
+
 // Not sure why calculated size is smaller than the actual one; this ratio is to adjust it to norm
 const adjustmentRatio = 1.21
 const targetChunkSize = 1e7
@@ -9,13 +12,13 @@ const encoder = new TextEncoder()
 const stringifyOptions = [null, 2] // Encoder, number of spaces
 
 const sourceInfo = {
-  path: '../src/',
+  path: './src/',
   fileName: 'cedict_ts',
   fileExtension: 'u8'
 }
 
 const targetInfo = {
-  path: '../dest/',
+  path: './dist/',
   fileName: 'cedict',
   version: '',
   fileExtension: 'json'
@@ -31,8 +34,7 @@ let sizeData = [] // eslint-disable-line prefer-const
 
 // An interface for reading from a source file
 const rlInterface = readline.createInterface({
-  input: fs.createReadStream(`${sourceInfo.path}${sourceInfo.fileName}.${sourceInfo.fileExtension}`),
-  output: process.stdout
+  input: fs.createReadStream(`${sourceInfo.path}${sourceInfo.fileName}.${sourceInfo.fileExtension}`)
 })
 
 /**
@@ -278,11 +280,14 @@ rlInterface.on('close', () => {
 
   match = metadataStr.match(/#! date=(\d{4})-(\d{2})-(\d{2})/)
   if (match !== null) {
-    targetInfo.version = `v${match[1]}${match[2]}${match[3]}`
-    dictData.metadata.version = targetInfo.version
+    targetInfo.version = `${match[1]}${match[2]}${match[3]}`
+    dictData.metadata.version = Number.parseInt(targetInfo.version)
   } else {
     console.error('Cannot parse a version field')
   }
+
+  targetInfo.revision = revision
+  dictData.metadata.revision = targetInfo.revision
 
   match = metadataStr.match(/#! time=(.+)/)
   if (match !== null) {
@@ -319,7 +324,12 @@ rlInterface.on('close', () => {
   chunks.forEach((chunk, index) => {
     chunk.metadata.chunkNumber = index + 1
     const output = JSON.stringify(chunk, ...stringifyOptions)
-    fs.writeFile(`${targetInfo.path}${targetInfo.fileName}-${targetInfo.version}-c${String(index + 1).padStart(3, '0')}.${targetInfo.fileExtension}`, output, function (err) {
+    let version = `v${targetInfo.version}`
+    if (targetInfo.revision > 1) {
+      // Revision number will be omitted from the file name if it is `1`
+      version += `r${targetInfo.revision}`
+    }
+    fs.writeFile(`${targetInfo.path}${targetInfo.fileName}-${version}-c${String(index + 1).padStart(3, '0')}.${targetInfo.fileExtension}`, output, function (err) {
       if (err) {
         return console.error(err)
       }

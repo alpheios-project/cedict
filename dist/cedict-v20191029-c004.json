@@ -15,11 +15,25 @@
     "originalFormat": "ts",
     "originalCharset": "UTF-8",
     "publisher": "MDBG",
-    "version": "v20191029",
+    "version": 20191029,
+    "revision": 1,
     "dateTime": "2019-10-29T06:16:52.000Z",
     "chunkNumber": 4
   },
   "entries": [
+    {
+      "index": 108829,
+      "type": "not specified",
+      "traditionalHeadword": "隱顯",
+      "simplifiedHeadword": "隐显",
+      "pinyin": "yin3 xian3",
+      "descriptions": [
+        "appearing and disappearing",
+        "dimly visible",
+        "intermittent",
+        "implicit (but not clearly present)"
+      ]
+    },
     {
       "index": 108830,
       "type": "not specified",
