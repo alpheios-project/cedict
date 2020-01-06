@@ -66,9 +66,13 @@ A list of entry IDs that will be included into the test file
  */
 const testRecords = [
   2,
+  35909,
   55562,
+  72267,
   73893,
-  83686
+  83686,
+  108832,
+  108835
 ]
 
 /**
