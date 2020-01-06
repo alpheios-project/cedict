@@ -50,6 +50,27 @@ const frequencyMeta = [
   }
 ]
 
+/*
+Name and location of a test file
+ */
+const testTargetInfo = {
+  path: './test/',
+  fileName: 'zho-cedict',
+  version: '',
+  revision: '',
+  fileExtension: 'json'
+}
+
+/*
+A list of entry IDs that will be included into the test file
+ */
+const testRecords = [
+  2,
+  55562,
+  73893,
+  83686
+]
+
 /**
  * Returns a unicode character code point of an argument.
  *
@@ -156,6 +177,13 @@ const writeData = (dictData) => {
     entries: dictData.entries.slice(currentChunkIndex, dictData.entries.length)
   })
 
+  // Build a version of data for testing that will include only those entries that are used during tests
+  const testData = {
+    metadata: dictData.metadata,
+    cedictMeta: dictData.cedictMeta,
+    entries: dictData.entries.filter(entry => testRecords.includes(entry.index))
+  }
+
   chunks.forEach((chunk, index) => {
     chunk.metadata.chunkNumber = index + 1
     const output = JSON.stringify(chunk, ...stringifyOptions)
@@ -170,6 +198,14 @@ const writeData = (dictData) => {
       }
     })
   })
+
+  // Write test data to the test file
+  const testOutput = JSON.stringify(testData, ...stringifyOptions)
+  fs.writeFile(`${testTargetInfo.path}${testTargetInfo.fileName}.${testTargetInfo.fileExtension}`, testOutput, function (err) {
+    if (err) {
+      return console.error(err)
+    }
+  })
 }
 
 Promise.all([getCedictData(), getUnihanData(), getIrgData(), getDictLikeData()])
@@ -180,6 +216,8 @@ Promise.all([getCedictData(), getUnihanData(), getIrgData(), getDictLikeData()])
     distData.metadata = calculateMeta(cedictData.metadata)
     distData.entries = appendUnihanData(cedictData.entries, unihanData, irgData, dictLikeData)
     writeData(distData)
+    console.log('CEDICT data files have been generated successfully.')
+    console.log('Please copy a test data sample from cedict/test/zho-cedict.json to fixtures/src/localJson.')
   }).catch(error => {
     console.log(error)
   })

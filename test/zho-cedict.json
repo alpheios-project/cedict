@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "version": 20191029,
+    "revision": 1,
+    "frequency": [
+      {
+        "value": 1,
+        "name": "least frequent",
+        "order": 5
+      },
+      {
+        "value": 2,
+        "name": "less frequent",
+        "order": 4
+      },
+      {
+        "value": 3,
+        "name": "moderatelyfrequent",
+        "order": 3
+      },
+      {
+        "value": 4,
+        "name": "more frequent",
+        "order": 2
+      },
+      {
+        "value": 5,
+        "name": "most frequent",
+        "order": 1
+      }
+    ],
+    "chunkNumber": 5
+  },
+  "cedictMeta": {
+    "name": "CC-CEDICT",
+    "description": "Community maintained free Chinese-English dictionary.",
+    "licenseName": "Creative Commons Attribution-ShareAlike 4.0 International License",
+    "licenseURI": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "referencedWorks": [
+      "CEDICT - Copyright (C) 1997, 1998 Paul Andrew Denisowski"
+    ],
+    "downloadURI": "https://www.mdbg.net/chinese/dictionary?page=cc-cedict",
+    "editorURI": "https://cc-cedict.org/editor/editor.php",
+    "referenceURI": "https://cc-cedict.org/wiki/",
+    "originalVersion": "1",
+    "originalSubversion": "0",
+    "originalFormat": "ts",
+    "originalCharset": "UTF-8",
+    "publisher": "MDBG",
+    "dateTime": "2019-10-29T06:16:52.000Z"
+  },
+  "entries": [
+    {
+      "index": 2,
+      "type": "not specified",
+      "traditional": {
+        "headword": "21三體綜合症"
+      },
+      "simplified": {
+        "headword": "21三体综合症"
+      },
+      "pinyin": "er4 shi2 yi1 san1 ti3 zong1 he2 zheng4",
+      "definitions": [
+        "trisomy",
+        "Down's syndrome"
+      ]
+    },
+    {
+      "index": 55562,
+      "type": "not specified",
+      "traditional": {
+        "headword": "槓",
+        "cantonese": "gong3 gung3 lung5",
+        "mandarin": "gàng",
+        "codePoint": "U+69D3",
+        "radical": {
+          "index": 75,
+          "additionalStrokes": 10,
+          "character": "木"
+        },
+        "frequency": 5,
+        "totalStrokes": 14
+      },
+      "simplified": {
+        "headword": "杠",
+        "cantonese": "gong1 gong3",
+        "mandarin": "gāng",
+        "codePoint": "U+6760",
+        "radical": {
+          "index": 75,
+          "additionalStrokes": 3,
+          "character": "木"
+        },
+        "totalStrokes": 7
+      },
+      "pinyin": "gang4",
+      "definitions": [
+        "thick pole",
+        "bar",
+        "rod",
+        "thick line",
+        "to mark with a thick line",
+        "to sharpen (knife)",
+        "(old) coffin-bearing pole"
+      ]
+    },
+    {
+      "index": 73893,
+      "type": "not specified",
+      "traditional": {
+        "headword": "眠",
+        "cantonese": "min4",
+        "mandarin": "mián",
+        "tang": "*men",
+        "codePoint": "U+7720",
+        "radical": {
+          "index": 109,
+          "additionalStrokes": 5,
+          "character": "目"
+        },
+        "frequency": 4,
+        "totalStrokes": 10
+      },
+      "simplified": {
+        "headword": "眠",
+        "cantonese": "min4",
+        "mandarin": "mián",
+        "tang": "*men",
+        "codePoint": "U+7720",
+        "radical": {
+          "index": 109,
+          "additionalStrokes": 5,
+          "character": "目"
+        },
+        "frequency": 4,
+        "totalStrokes": 10
+      },
+      "pinyin": "mian2",
+      "definitions": [
+        "to sleep",
+        "to hibernate"
+      ]
+    },
+    {
+      "index": 83686,
+      "type": "not specified",
+      "traditional": {
+        "headword": "而今"
+      },
+      "simplified": {
+        "headword": "而今"
+      },
+      "pinyin": "er2 jin1",
+      "definitions": [
+        "now",
+        "at the present (time)"
+      ]
+    }
+  ]
+}
