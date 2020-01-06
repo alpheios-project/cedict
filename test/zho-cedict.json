@@ -28,8 +28,7 @@
         "name": "most frequent",
         "order": 1
       }
-    ],
-    "chunkNumber": 5
+    ]
   },
   "cedictMeta": {
     "name": "CC-CEDICT",

@@ -184,6 +184,15 @@ const writeData = (dictData) => {
     entries: dictData.entries.filter(entry => testRecords.includes(entry.index))
   }
 
+  // Write test data to the test file
+  const testOutput = JSON.stringify(testData, ...stringifyOptions)
+  fs.writeFile(`${testTargetInfo.path}${testTargetInfo.fileName}.${testTargetInfo.fileExtension}`, testOutput, function (err) {
+    if (err) {
+      return console.error(err)
+    }
+  })
+
+  // Split CEDICT dictionary data into chunks and write them to files
   chunks.forEach((chunk, index) => {
     chunk.metadata.chunkNumber = index + 1
     const output = JSON.stringify(chunk, ...stringifyOptions)
@@ -197,14 +206,6 @@ const writeData = (dictData) => {
         return console.error(err)
       }
     })
-  })
-
-  // Write test data to the test file
-  const testOutput = JSON.stringify(testData, ...stringifyOptions)
-  fs.writeFile(`${testTargetInfo.path}${testTargetInfo.fileName}.${testTargetInfo.fileExtension}`, testOutput, function (err) {
-    if (err) {
-      return console.error(err)
-    }
   })
 }
 
