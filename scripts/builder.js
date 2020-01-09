@@ -62,7 +62,8 @@ const testTargetInfo = {
 }
 
 /*
-A list of entry IDs that will be included into the test file
+A list of entry IDs that will be included into the test subset of CEDICT data.
+This subset is used by the `fixtures/src/cedict/cedict-fixture.js` in the fixtures library.
  */
 const testRecords = [
   2,
