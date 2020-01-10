@@ -10,7 +10,6 @@ deploy:
   bucket: lexisdev
   region: us-east-2
   local-dir: dist
-  upload-dir: cedict
   acl: public_read_write
   on:
     repo: alpheios-project/cedict
