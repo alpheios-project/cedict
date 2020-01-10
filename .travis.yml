@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- 13.2
+cache: npm
+deploy:
+  provider: s3
+  access_key_id: AKIAZIUCQ6FCHKXGRX4Y
+  secret_access_key:
+    secure: tF09J2gYZraB4NOT5JieluI7O4zBw63DuFO640ZnoVPjxyPSPgCig1D6G3qG0K8pHpmfSnkECdOIrCd2PWLn85UyCmrwqxkKIbLNSsnZFkiH7mAA4Za8Z/06iFxiruRl9g87GzRFDvuW8vXipFg8ZGBGe73P8xNDGAtiZVbTIxrbaG+D0JaLBgq/e0OQvekWP6FEFKnqM4RC1oJaDATXr+wL0EUzk233kxY4qwm96122OLIv2Qk2KD/bRZk8ep/IBWdxtYTInGyXr+Xq0ZJPybU88sCrScnku8zotWDsMuqAJoWQK2YTVy74Iy/KNFZQIHopHEF8XSkyNz4ZhMUpx0Xv8i+pM8duDby+DtfSRatxj7Gzqtyme27MWx9Emw8B1awdTvqbMgcu28e0lmZf8ZciyEG9NTCnnqsbCnNqowJAfsKTO5CGTmFn2YAB3wWKoNIw5Ww33MXllTRjLgy0osm45oycvJZTTlpFNLH+0ER6hzSK4hLhsMfHy9+sHlvr/Y2FdvLmdIEbj49OpBzlhujAORQpiwlmlT9fjmxxJM0qSFzZ9zO2ecUtsCtgEEHi1hA61M/+tD0VPxDW8CvkFY9Qb9hEeuTJJ1x5a5Max666SG5YdAfynKhiRlMR8Y1MtsGtZiZHJBnioHg2Sc8jeD5MdJEsYvaWQCQGwXC55KM=
+  bucket: lexisdev
+  local-dir: dist
+  upload-dir: cedict
+  acl: public_read_write
+  on:
+    repo: alpheios-project/cedict
+    branch: master
