@@ -11,7 +11,7 @@ deploy:
   region: us-east-2
   local-dir: dist
   upload-dir: cedict
-  acl: public_read_write
+  acl: public_read
   on:
     repo: alpheios-project/cedict
-    branch: cedict
+    branch: master
