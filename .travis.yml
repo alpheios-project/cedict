@@ -12,6 +12,7 @@ deploy:
   local-dir: dist
   upload-dir: cedict
   acl: public_read
+  cache_control: "max-age=2592000"
   on:
     repo: alpheios-project/cedict
     branch: master
