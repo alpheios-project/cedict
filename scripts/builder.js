@@ -8,7 +8,7 @@ import { getDictLikeData } from './dictionary-like-data.js'
 const revision = 1
 
 // Not sure why calculated size is smaller than the actual one; this ratio is to adjust it to norm
-const adjustmentRatio = 1.21
+const adjustmentRatio = 1.25
 const targetChunkSize = 1e7
 const chunkSizeLimit = Math.round(targetChunkSize / adjustmentRatio)
 const encoder = new TextEncoder()
