@@ -68,6 +68,9 @@ This subset is used by the `fixtures/src/cedict/cedict-fixture.js` in the fixtur
 const testRecords = [
   2,
   35909,
+  49467,
+  49468,
+  49533,
   55562,
   72267,
   73893,
@@ -223,7 +226,7 @@ Promise.all([getCedictData(), getUnihanData(), getIrgData(), getDictLikeData()])
     distData.entries = appendUnihanData(cedictData.entries, unihanData, irgData, dictLikeData)
     writeData(distData)
     console.log('CEDICT data files have been generated successfully.')
-    console.log('Please copy a test data sample from cedict/test/zho-cedict.json to fixtures/src/localJson.')
+    console.log('Please copy a test data sample from cedict/test/zho-cedict.json to fixtures/src/cedict/data.')
   }).catch(error => {
     console.log(error)
   })

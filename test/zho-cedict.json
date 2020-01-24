@@ -82,6 +82,98 @@
       ]
     },
     {
+      "index": 49467,
+      "type": "not specified",
+      "traditional": {
+        "headword": "日",
+        "cantonese": "jat6",
+        "mandarin": "rì",
+        "tang": "*njit",
+        "codePoint": "U+65E5",
+        "radical": {
+          "index": 72,
+          "additionalStrokes": 0,
+          "character": "日"
+        },
+        "frequency": 2,
+        "totalStrokes": 4
+      },
+      "simplified": {
+        "headword": "日",
+        "cantonese": "jat6",
+        "mandarin": "rì",
+        "tang": "*njit",
+        "codePoint": "U+65E5",
+        "radical": {
+          "index": 72,
+          "additionalStrokes": 0,
+          "character": "日"
+        },
+        "frequency": 2,
+        "totalStrokes": 4
+      },
+      "pinyin": "Ri4",
+      "definitions": [
+        "abbr. for 日本[Ri4 ben3], Japan"
+      ]
+    },
+    {
+      "index": 49468,
+      "type": "not specified",
+      "traditional": {
+        "headword": "日",
+        "cantonese": "jat6",
+        "mandarin": "rì",
+        "tang": "*njit",
+        "codePoint": "U+65E5",
+        "radical": {
+          "index": 72,
+          "additionalStrokes": 0,
+          "character": "日"
+        },
+        "frequency": 2,
+        "totalStrokes": 4
+      },
+      "simplified": {
+        "headword": "日",
+        "cantonese": "jat6",
+        "mandarin": "rì",
+        "tang": "*njit",
+        "codePoint": "U+65E5",
+        "radical": {
+          "index": 72,
+          "additionalStrokes": 0,
+          "character": "日"
+        },
+        "frequency": 2,
+        "totalStrokes": 4
+      },
+      "pinyin": "ri4",
+      "definitions": [
+        "sun",
+        "day",
+        "date, day of the month"
+      ]
+    },
+    {
+      "index": 49533,
+      "type": "not specified",
+      "traditional": {
+        "headword": "日月"
+      },
+      "simplified": {
+        "headword": "日月"
+      },
+      "pinyin": "ri4 yue4",
+      "definitions": [
+        "the sun and moon",
+        "day and month",
+        "every day and every month",
+        "season",
+        "life and livelihood"
+      ]
+    },
+    {
       "index": 55562,
       "type": "not specified",
       "traditional": {

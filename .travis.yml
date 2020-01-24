@@ -2,6 +2,7 @@ language: node_js
 node_js:
 - 13.2
 cache: npm
+install: skip
 deploy:
   provider: s3
   access_key_id: AKIAZIUCQ6FCHKXGRX4Y
